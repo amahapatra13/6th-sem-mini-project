@@ -20,7 +20,17 @@ const UserSchema = new mongoose.Schema({
     date: {
         type: Date,
         default: Date.now
-    }
+    },
+    address : {
+        type: String,
+    },
+    mobileNo : {
+        type: String,
+    },
+    campaign:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'campaign'
+    }]
 });
 
 module.exports = User = mongoose.model('user', UserSchema)

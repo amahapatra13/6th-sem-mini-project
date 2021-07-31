@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 
 const CampaignSchema = new mongoose.Schema({
-    profile : {
+    user : {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'profile'
+        ref: 'user'
     },
     name: {
         type: String,
