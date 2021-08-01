@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-
+const auth = require('../../middleware/auth');
+const {check, validationResult} = require('express-validator')
 const Campaign = require('../../models/campaign');
 const User = require('../../models/User')
 const bcrypt = require('bcryptjs')
@@ -10,7 +11,7 @@ const bcrypt = require('bcryptjs')
 //desc get all campaigns
 //@access public
 
-router.get('/campaigns', async(req,res) => {
+router.get('/', async(req,res) => {
 
     try{
         const campaigns = await Campaign.find();
@@ -25,13 +26,13 @@ router.get('/campaigns', async(req,res) => {
 //@route    put api/addcampaign
 //desc      add a campaign   
 //@access   public
-router.put('/addcampaign',
+router.post('/addcampaign',
     [
         auth,
         [
             check('name', 'Name is required').not().isEmpty(),
             check('description', 'Description is required').not().isEmpty(),
-            check('requiredAmount', 'An amount is required').not().iSEmpty()
+            check('requiredAmount', 'An amount is required').not().isEmpty()
         ]
     ],
     async (req, res) => {
@@ -42,18 +43,30 @@ router.put('/addcampaign',
         }
 
         const { name, description, requiredAmount} = req.body;
-        const userId = req.user.id;
-        newCampaign = new Campaign({
-            userId,name,description,requiredAmount
+        const user = req.user.id;
+        console.log(user);
+        const newCampaign = new Campaign({
+            user,name,description,requiredAmount
         })
+        console.log(newCampaign)
         let id;
         try{
-            await newCampaign.save((err,room) => {
-                id = room.id;
-            })
-            const user = await User.findOne({user : req.user.id});
 
-            user.campaign.unshift(id)
+            const user1 = await User.findById(req.user.id);
+            console.log(user1);
+            if(user1){
+                console.log(newCampaign.id)
+                await newCampaign.save()
+                user1.campaign.unshift(newCampaign.id)
+                res.json({user : user1})
+            }else{
+                return res.status(400).send('error occurred')
+            }
+
+            
+
+
+            
             
 
         }catch(err){
@@ -61,3 +74,5 @@ router.put('/addcampaign',
             res.status(400).json('Invalid credentials')
         }
 })
+
+module.exports = router;
