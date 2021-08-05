@@ -45,6 +45,8 @@ router.post('/',[
     //Encrypt password
         const salt = await bcrypt.genSalt(10);
         user.password = await bcrypt.hash(password, salt);
+        const chain = await User.find()[0];
+        user.ledger = chain['ledger'];
         await user.save();
     //return json web token
         const payload = {

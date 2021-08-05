@@ -116,7 +116,16 @@ router.post('/', auth, async(req,res) => {
 });
 
 router.get('/showtransaction',auth, async(req,res) => {
-    
+
+    try{
+        const user = await User.findById(req.user.id);
+        const chain = user['ledger'];
+        res.status(200).send({ ledger : chain});
+    }catch(err){
+        console.log(err.message)
+        res.status(400).send('server error')
+    }
+
 })
 
 module.exports = router

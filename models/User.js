@@ -34,7 +34,37 @@ const UserSchema = new mongoose.Schema({
     valid : {
         type:Boolean,
         default : true
-    }
+    },
+    ledger : [
+        {
+            index: {
+                type:Number,
+            },
+            timestamp: {
+                type:Date,
+                default: Date.now
+            },
+            data: {
+                sender:{
+                    type: String,
+                },
+                recipient : {
+                    type : String,
+                },
+                amount: {
+                    type: Number
+                }
+            },
+            hash: {
+                type: String,
+                default: null
+            },
+            prevHash : {
+                type: String,
+                default: null
+            } 
+        } 
+    ]
 });
 
 module.exports = User = mongoose.model('user', UserSchema)
