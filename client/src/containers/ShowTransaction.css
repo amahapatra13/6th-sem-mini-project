@@ -1,0 +1,20 @@
+.ShowTransaction table, th, td {
+    border: 1px solid black;
+  }
+
+.ShowTransaction {
+    width: 100%;
+    margin: 20px auto;
+}
+.ShowTransaction table{
+    width: 50%;
+    margin: 50px auto;
+    font-size: 1.2rem;
+    text-align: center;
+}
+.ShowTransaction h1{
+    text-align: center;
+}
+.ShowTransaction .HomeLink{
+    text-align: center;
+}

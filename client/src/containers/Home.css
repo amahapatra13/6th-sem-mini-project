@@ -1,0 +1,46 @@
+.home{
+    overflow-x: hidden;
+    /* margin-top: 70px; */
+    /* background-color: #F8F9FA; */
+    /* background-color: #fffff0; */
+
+}
+.home .image img{
+    width: 100%;
+    overflow-x: hidden;
+}
+/* .home .main{
+    background-color: white;
+} */
+
+/* .home .maintext .start{
+    display: flex;
+    justify-content: center;
+    margin-top: 140px;
+} */
+
+.home .cards{
+    margin-top: 100px;
+}
+.home .main{
+    margin-top: 30px;
+}
+.home .footer{
+    height: 200px;
+    background-color: #063c3b;
+    color: white;
+    margin-top: 100px;
+}
+.home .cards .card{
+    transform: scale(0.9);
+}
+.maintext{
+    padding-top: 50px;
+}
+.maintext p{
+    color: grey;
+}
+/* .home .cards{
+    background-color: #F8F9FA;
+} */
+

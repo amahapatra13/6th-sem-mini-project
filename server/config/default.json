@@ -1,0 +1,4 @@
+{
+    "mongouri" : "mongodb+srv://ashu:1234@datab.o1vug.mongodb.net/datab?retryWrites=true&w=majority",
+    "jwtsecret" : "miniproject"
+}

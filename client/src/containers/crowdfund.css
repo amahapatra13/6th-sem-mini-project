@@ -1,0 +1,41 @@
+.crowd-color {
+    background-color: #eee;
+}
+.crowdfund-container {
+    /* display: flex;
+    flex-direction: column;
+    align-items: flex-start; */
+    padding: 50px;
+    margin: auto;
+    
+    
+}
+
+.crowdfund-title {
+    font-size: 40px;
+}
+
+.image-box {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.crowd-image {
+    padding: 30px;
+    max-width: 500px;
+    max-height: 500px;
+    
+}
+
+
+.crowdfund-description {
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    font-size: 25px;
+}
+.crowd-button {
+    width: 400px;
+    margin: 20px 35%;
+}

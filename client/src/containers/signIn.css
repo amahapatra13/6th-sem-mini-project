@@ -1,0 +1,36 @@
+/* .main {
+    width: 100vw;
+    height: 100vh;
+    background-color: #eee;
+} */
+
+.box {
+    border: 2px solid #eee;
+    border-radius: 8px;
+    width: 28%;
+    background-color: white;
+    padding: 20px;
+    position: relative;
+    top: 23%;
+    left: 35%;
+    box-shadow: 0 4px 20px rgb(0 0 0 / 4%);
+
+}
+
+.logo {
+    width: 100%;
+    margin-bottom: 35px;
+}
+
+.logo img {
+    padding: 0 25%;
+}
+
+.header ,.signUp-text {
+    text-align: center;
+}
+
+.logIn-button {
+    width: 100%;
+}
+
