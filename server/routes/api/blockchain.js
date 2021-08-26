@@ -48,19 +48,21 @@ class Blockchain {
         return this.chain.length;
     }
 
+    // calculateHash(i) {
+    //     return SHA256(this.chain[i].index + this.chain[i].prevHash + this.chain[i].timestamp + JSON.stringify(this.chain[i].data)).toString();
+    // }
+
     isChainValid() {
         for(let i=1;i<this.chain.length;i++){
             const currentBlock = this.chain[i];
             const previousBlock = this.chain[i-1];
-            // console.log(currentBlock.calculateHash())
-            // if(currentBlock.hash !== currentBlock.calculateHash()){
+            // if(currentBlock.hash !== this.calculateHash(i)){
+            //     console.log(i, " currentblock hash : ",currentBlock.hash, " calculate ", this.calculateHash(i))
             //     return false;
             // }
-
             if(currentBlock.prevHash !== previousBlock.hash){
                 return false;
             }
-
             return true;
         }
     }
@@ -74,24 +76,23 @@ class Blockchain {
 router.post('/', auth, async(req,res) => {
     try{
         const user = await User.findById(req.user.id).select('-password');
-        console.log(user)
-        console.log(user['valid'])
+        // console.log(user)
+        // console.log(user['valid'])
         if(!user['valid']){
             return res.status(500).send('You are prohibited to make a transaction')
         }
         const chain = user['ledger'];
-        console.log(chain)
+        // console.log(chain)
         const coin = new Blockchain(chain);
-        console.log("coin", coin)
+        // console.log("coin", coin)
         if(chain.length <= 0){
             coin.createGenesisBlock();
         } 
         const valid = coin.isChainValid()
-        // console.log(valid)
-        // if(!valid) {
-        //     return res.status(500).send('You are prohibited to make a tansaction');
-        // }
-        console.log("hi");
+        console.log(valid)
+        if(!valid) {
+            return res.status(500).send('You are prohibited to make a tansaction');
+        }
         const {sender, recipient, amount } = req.body;
         const data = {sender, recipient, amount};
 
@@ -108,17 +109,20 @@ router.post('/', auth, async(req,res) => {
         for(let i=0;i<users.length;i++){
             console.log("user ledger", users[i].ledger);
             let temp = new Blockchain(coin.chain);
-            console.log("temp" , temp)
-            // let check = temp.isChainValid();
-            // console.log("check",check)
-            // if(!check) {
-            //     users[i].valid = false;    
-            // }else{
-                console.log("coin chain", coin.chain)
-                users[i].ledger = coin.chain;
-                console.log("user leadger", users[i].ledger)
+            // console.log("temp" , temp)
+            let check = temp.isChainValid();
+            console.log("check",check)
+            if(!check) {
+                users[i]['valid'] = false;
                 await users[i].save();
-            // }
+                return res.status(500).send('You are prohibited to make a tansaction');    
+            }else{
+                // console.log("coin chain", coin.chain)
+                users[i].ledger = coin.chain;
+                // console.log("user leadger", users[i].ledger)
+                await users[i].save();
+                return res.status(200).send("Successfull entry")
+            }
         }
         const user1 = await User.find();
         res.json(user1)
@@ -133,7 +137,13 @@ router.get('/showtransaction',auth, async(req,res) => {
     try{
         const user = await User.findById(req.user.id);
         const chain = user['ledger'];
-        res.status(200).send({ ledger : chain});
+        const coin = new Blockchain(chain);
+        const valid = coin.isChainValid();
+        if(!valid){
+            return res.status(500).send('You are prohibited to use the platform')
+        }
+        
+        res.status(200).send({ user : user});
     }catch(err){
         console.log(err.message)
         res.status(400).send('server error')
